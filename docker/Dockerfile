@@ -29,7 +29,7 @@ RUN apt-get update \
     unzip \
   && rm -rf /var/lib/apt/lists/*
 
-# Working directory
+# Temporary directory
 RUN mkdir -p /tmp/qisinstall
 
 # Install directory
@@ -63,6 +63,11 @@ RUN set -eux; \
 
 # Define the QISKit configuration file
 COPY Qconfig.py /ibmq/qiskit-tutorial-master/
-RUN sed -i -e "s/PUT_YOUR_API_TOKEN_HERE/${QISKIT_API_TOKEN}/" /ibmq/qiskit-tutorial-master/Qconfig.py
+
+
+# Tidy-up the temporary files
+RUN rm -rf /tmp/qisinstall
+
+WORKDIR /ibmq/qiskit-tutorial-master/
 
 
