@@ -58,11 +58,11 @@ RUN set -eux; \
     URL="https://github.com/QISKit/qiskit-tutorial/archive/master.zip"; \
     ESUM="0a61fd5b704e29fa57f0b2d1c36e207e57b57c42910e36fd69af73fbf4088000"; \
     curl -Lso /tmp/qisinstall/master.zip ${URL}; \
-    echo "${ESUM} /tmp/qisinstall/anaconda.sh" | sha256sum -c - ; \
+    echo "${ESUM} /tmp/qisinstall/master.zip" | sha256sum -c - ; \
     unzip -d /ibmq /tmp/qisinstall/master.zip
 
 # Define the QISKit configuration file
-COPY Qisconfig.py /ibmq/qiskit-tutorial-master/
-RUN sed -i -e "s/PUT_YOUR_API_TOKEN_HERE/${QISKIT_API_TOKEN}/" Qisconfig.py
+COPY Qconfig.py /ibmq/qiskit-tutorial-master/
+RUN sed -i -e "s/PUT_YOUR_API_TOKEN_HERE/${QISKIT_API_TOKEN}/" /ibmq/qiskit-tutorial-master/Qconfig.py
 
 
