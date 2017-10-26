@@ -68,6 +68,10 @@ COPY Qconfig.py /ibmq/qiskit-tutorial-master/
 # Tidy-up the temporary files
 RUN rm -rf /tmp/qisinstall
 
+EXPOSE 80 8888
+
 WORKDIR /ibmq/qiskit-tutorial-master/
+
+CMD ["/ibmq/anaconda/bin/jupyter-notebook", "--allow-root", "--ip='*'", "--no-browser", "index.ipynb"]
 
 
