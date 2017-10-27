@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #
-# Expected to run with environment variable "QISKIT_API_TOKEN"
+# Expected to run with environment variable -e "QISKIT_API_TOKEN"
 #
 
 FROM ubuntu:16.04
@@ -59,19 +59,20 @@ RUN set -eux; \
     ESUM="0a61fd5b704e29fa57f0b2d1c36e207e57b57c42910e36fd69af73fbf4088000"; \
     curl -Lso /tmp/qisinstall/master.zip ${URL}; \
     echo "${ESUM} /tmp/qisinstall/master.zip" | sha256sum -c - ; \
-    unzip -d /ibmq /tmp/qisinstall/master.zip
+    unzip -d /ibmq /tmp/qisinstall/master.zip ; \
+    rm -f /tmp/qisinstall/master.zip
 
 # Define the QISKit configuration file
 COPY Qconfig.py /ibmq/qiskit-tutorial-master/
 
-
-# Tidy-up the temporary files
+# Remove the temporary directory
 RUN rm -rf /tmp/qisinstall
 
-EXPOSE 80 8888
+# Server available on this port
+EXPOSE 8888
 
+# Default command
 WORKDIR /ibmq/qiskit-tutorial-master/
-
-CMD ["/ibmq/anaconda/bin/jupyter-notebook", "--allow-root", "--ip='*'", "--no-browser", "index.ipynb"]
+CMD ["/ibmq/anaconda/bin/jupyter", "notebook", "--allow-root", "--ip='*'", "--no-browser", "index.ipynb"]
 
 
