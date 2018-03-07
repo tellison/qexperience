@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2017.
+# (C) Copyright IBM Corporation 2017, 2018.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ RUN mkdir /ibmq
 
 # Get Anaconda
 RUN set -eux; \
-    URL="https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh"; \
-    ESUM="55e4db1919f49c92d5abbf27a4be5986ae157f074bf9f8238963cd4582a4068a"; \
+    URL="https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh"; \
+    ESUM="7e6785caad25e33930bc03fac4994a434a21bc8401817b7efa28f53619fa9c29"; \
     curl -Lso /tmp/qisinstall/anaconda.sh ${URL}; \
     echo "${ESUM} /tmp/qisinstall/anaconda.sh" | sha256sum -c -
 
@@ -56,7 +56,7 @@ RUN set -eux; \
 # Get the QISKit tutorials
 RUN set -eux; \
     URL="https://github.com/QISKit/qiskit-tutorial/archive/master.zip"; \
-    ESUM="0a61fd5b704e29fa57f0b2d1c36e207e57b57c42910e36fd69af73fbf4088000"; \
+    ESUM="71473be36e137449be420df2f1bfd19b4f92d2f410622ea6633728c5e228f61a"; \
     curl -Lso /tmp/qisinstall/master.zip ${URL}; \
     echo "${ESUM} /tmp/qisinstall/master.zip" | sha256sum -c - ; \
     unzip -d /ibmq /tmp/qisinstall/master.zip ; \
@@ -72,7 +72,6 @@ RUN rm -rf /tmp/qisinstall
 EXPOSE 8888
 
 # Default command
+ENV PYTHONPATH "/ibmq/qiskit-tutorial-master/"
 WORKDIR /ibmq/qiskit-tutorial-master/
 CMD ["/ibmq/anaconda/bin/jupyter", "notebook", "--allow-root", "--ip='*'", "--no-browser", "index.ipynb"]
-
-
