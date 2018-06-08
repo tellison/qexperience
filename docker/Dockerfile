@@ -64,7 +64,7 @@ RUN set -eux; \
 # Get the QISKit tutorials
 RUN set -eux; \
     URL="https://github.com/QISKit/qiskit-tutorial/archive/master.zip"; \
-    ESUM="bc156533c8de1c68c977e44ddb9c3167c4ce72fd7c14e793bdd48637636e7482"; \
+    ESUM="814282f4de196fd076fed789fad005dc9fb084c54fcc63a9bbd8edb4598d42d2"; \
     curl -Lso /tmp/qisinstall/master.zip ${URL}; \
     echo "${ESUM} /tmp/qisinstall/master.zip" | sha256sum -c - ; \
     unzip -d /ibmq /tmp/qisinstall/master.zip ; \
