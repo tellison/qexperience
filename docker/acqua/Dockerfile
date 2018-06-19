@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2017, 2018.
+# (C) Copyright IBM Corporation 2018.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #
-# Expected to run with environment variable -e "QISKIT_API_TOKEN"
+# Expected to run with environment variable -e "IBMQE_API"
 #
 
 FROM qiskit/qiskit-tutorial:latest
@@ -29,13 +29,13 @@ RUN set -eux ; \
 
 ENV PATH "/ibmq/anaconda/bin:$PATH"
 
-# Install QISKit code & image code
+# Install QISKit ACQUA code & Python dependencies
 RUN set -eux; \
     pip install pyscf; \
     pip install qiskit-acqua; \
     pip install qiskit-acqua-chemistry
 
-# Get the QISKit ACQUA tutorials
+# Get the latest QISKit ACQUA tutorials
 RUN set -eux; \
     mkdir -p /tmp/qisinstall ; \
     URL="https://github.com/QISKit/qiskit-acqua-tutorials/archive/master.zip"; \
