@@ -43,7 +43,6 @@ RUN set -eux; \
     curl -Lso /tmp/qisinstall/master.zip ${URL}; \
     echo "${ESUM} /tmp/qisinstall/master.zip" | sha256sum -c - ; \
     unzip -d /ibmq /tmp/qisinstall/master.zip ; \
-    rm -f /tmp/qisinstall/master.zip; \
     rm -rf /tmp/qisinstall
 
 # Server available on this port
