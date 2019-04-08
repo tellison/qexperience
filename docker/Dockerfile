@@ -32,6 +32,8 @@ RUN set -eux ; \
     poppler-utils \
     texlive-latex-base \
     texlive-pictures \
+    libgomp1 \
+    libblas-dev \
     texlive-latex-extra && \
   rm -rf /var/lib/apt/lists/* && \
   texhash
@@ -43,8 +45,8 @@ RUN set -eux; \
 
 # Get Anaconda
 RUN set -eux; \
-    URL="https://repo.continuum.io/archive/Anaconda3-5.2.0-Linux-x86_64.sh"; \
-    ESUM="09f53738b0cd3bb96f5b1bac488e5528df9906be2480fe61df40e0e0d19e3d48"; \
+    URL="https://repo.continuum.io/archive/Anaconda3-2019.03-Linux-x86_64.sh"; \
+    ESUM="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a"; \
     curl -Lso /tmp/qisinstall/anaconda.sh ${URL}; \
     echo "${ESUM} /tmp/qisinstall/anaconda.sh" | sha256sum -c - && \
     bash /tmp/qisinstall/anaconda.sh -b -p /ibmq/anaconda; \
@@ -61,14 +63,11 @@ RUN set -eux; \
 # Get the QISKit tutorials
 RUN set -eux; \
     URL="https://github.com/QISKit/qiskit-tutorial/archive/master.zip"; \
-    ESUM="fd3ca8225d275e87a03e6bd99f6ea6627c9e6a41a70650644ff45c02ef8d6fb1"; \
+    ESUM="9596f1e5ae9793ca10a9d017d795ee9143cab7de10040880bdc6bb3f4f5219e4"; \
     curl -Lso /tmp/qisinstall/master.zip ${URL}; \
     echo "${ESUM} /tmp/qisinstall/master.zip" | sha256sum -c - ; \
     unzip -d /ibmq /tmp/qisinstall/master.zip ; \
     rm -f /tmp/qisinstall/master.zip
-
-# Define the QISKit configuration file
-RUN mv /ibmq/qiskit-tutorial-master/Qconfig.py.template /ibmq/qiskit-tutorial-master/Qconfig.py
 
 # Remove the temporary directory
 RUN rm -rf /tmp/qisinstall
@@ -79,10 +78,18 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/
 RUN chmod +x /usr/bin/tini
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
+
+# Install QISKit ACQUA code & Python dependencies
+RUN set -eux; \
+    pip install pyscf; \
+    pip install qiskit-aqua; \
+    pip install qiskit-chemistry
+
+
 # Server available on this port
 EXPOSE 8888
 
 # Default command
-ENV PYTHONPATH "/ibmq/qiskit-tutorial-master/"
-WORKDIR /ibmq/qiskit-tutorial-master/
-CMD ["/ibmq/anaconda/bin/jupyter", "notebook", "--allow-root", "--port=8888", "--ip='0.0.0.0'", "--no-browser", "index.ipynb"]
+ENV PYTHONPATH "/ibmq/qiskit-tutorials-master/"
+WORKDIR /ibmq/qiskit-tutorials-master/
+CMD ["/ibmq/anaconda/bin/jupyter", "notebook", "--allow-root", "--port=8888", "--ip='0.0.0.0'", "index.ipynb"]
